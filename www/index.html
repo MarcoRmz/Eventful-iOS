@@ -2,12 +2,11 @@
 <html>
 <head>
     <title>Eventful</title>
-<!--
-    This template can be used for simple app with left side menu that can be opened to switch views, for applications like Youtube App or Gmail app.
--->  
-    
+
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0;" />
     
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+
     <link rel="stylesheet" type="text/css" href="appframework/af.ui.css" />
     <link rel="stylesheet" type="text/css" href="appframework/icons.css" />
     <script type="text/javascript" charset="utf-8" src="appframework/appframework.ui.min.js"></script>
@@ -17,13 +16,52 @@
     <script type="application/javascript" src="sidebar/js/sidebar.js"></script>
     <script type="application/javascript" src="sidebar/js/swipe.js"></script>
     <script type="text/javascript" charset="utf-8" src="appframework/plugins/af.slidemenu.js"></script>
+
+
      <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
      <script src="/javascripts/backbone.js"></script>
      <script type="text/javascript" src="https://www.parsecdn.com/js/parse-1.3.3.min.js"></script>
      <script>
-       Parse.initialize("dB1ANk1pqDccOoQnapFUnF78V2Sfvb0koKE16RC5", "MW2XuVu8m1mCszvFTnVpETs1ayUkM0IfXwG3AeH4");
-     </script>
+    Parse.initialize("dB1ANk1pqDccOoQnapFUnF78V2Sfvb0koKE16RC5", "MW2XuVu8m1mCszvFTnVpETs1ayUkM0IfXwG3AeH4", "fBxYC2cKAAKYqLkktuLaNDXb2gSBktbZ5ZirgkaE");
+    function register(){
+      var x = document.getElementById("frm1");
+      var user = new Parse.User();
+      user.set("fname", x.elements[0].value);
+      user.set("lname", x.elements[1].value);
+      user.set("username", x.elements[2].value);
+      user.set("password", x.elements[3].value);
+      user.set("email", x.elements[4].value);
+      user.signUp(null, {
+        success: function(user) {
+          // Hooray! Let them use the app now.
+          alert("Registro exitoso! Bienvenido " + x.elements[2].value + "!");
+          move();
+        },
+        error: function(user, error) {
+          // Show the error message somewhere and let the user try again.
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
+    }
 
+    function login() {
+      var x = document.getElementById("frm2");
+      Parse.User.logIn(x.elements[0].value, x.elements[1].value, {
+        success: function(user) {
+        // Do stuff after successful login.
+        alert("Bienvenido " + x.elements[0].value + "!");
+        move();
+
+        },
+        error: function(user, error) {
+        // The login failed. Check error to see why.
+        alert("Error: " + error.code + " " + error.message);
+
+        }
+      });
+    }
+
+    </script>
     <!-- phantom library, needed for XDK "legacy" container api calls -->
     <script src="intelxdk.js"></script>
     <!-- phantom library, needed for Cordova api calls -->
@@ -51,33 +89,20 @@
         });
     </script>
     <script>
-    var powerXML = new XMLHttpRequest();
-        powerXML.open("GET", "https://dB1ANk1pqDccOoQnapFUnF78V2Sfvb0koKE16RC5:javascript-key=MW2XuVu8m1mCszvFTnVpETs1ayUkM0IfXwG3AeH4@api.parse.com/1/classes/Image/", true);
-$.ajax({
-    type: 'GET',
-    url: 'https://dB1ANk1pqDccOoQnapFUnF78V2Sfvb0koKE16RC5:javascript-key=MW2XuVu8m1mCszvFTnVpETs1ayUkM0IfXwG3AeH4@api.parse.com/1/classes/Image/',
-    type:'json'
-      },
-    function(data){
-      /*eventList.hide();
-      console.log('Success');
-      eventsParse = new UI.Menu({
-          sections: [{
-            title: 'Events',
-            items: [{
-              title: data.results[0].title
-              ]}
-              */
-        var $div = $('#results');
-        $.each(data.suggestions, function(i, el) {
-       $div.append('<p>' + el.formatted_text + '</p>');
+        var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+    tags: "mount rainier",
+    tagmode: "any",
+    format: "json"
+  })
+    .done(function( data ) {
+      $.each( data.items, function( i, item ) {
+        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#results" );
+        if ( i === 3 ) {
+          return false;
+        }
+      });
     });
-    },
-    error: function(e)
-    {
-       alert(e.message);
-    }
-});
 </script>
 </head>
 <body> 
@@ -88,6 +113,7 @@ $.ajax({
         <ul class="list">
             <li><a href="#page1" class="icon calendar">Eventful Events</a></li>
             <li><a href="#page2" class="icon location">Near You</a></li>
+            <li><a href="#page3" class="icon location">Login</a></li>
         </ul>
     </nav>
     
@@ -100,7 +126,9 @@ $.ajax({
                 <h1>Eventful Events</h1>
             </header>
             <p>Event List</p>
-            <p id="results"></p>
+            <div id="results"></div>
+    <button onclick="doJSON2()">Get JSON</button>
+        <iframe src="https://dB1ANk1pqDccOoQnapFUnF78V2Sfvb0koKE16RC5:javascript-key=MW2XuVu8m1mCszvFTnVpETs1ayUkM0IfXwG3AeH4@api.parse.com/1/classes/Image/"></iframe>
         </div>
         
         <div class="panel" title="Near You" id="page2" data-footer="none">
@@ -110,6 +138,25 @@ $.ajax({
             </header>
             <p>Map of events near you.</p>
         </div>
+
+        <div class="panel" title="Login" id="page3" data-footer="none">
+            <header>
+                <a id="menubadge" onclick='$.ui.toggleSideMenu()' class='menuButton' style="float:left !important"></a>
+                <h1>Login</h1>
+            </header>
+    <div class="login_left">
+        <h3>Clientes registrados</h3>
+        <p>Bienvenido de vuelta</p>
+        <div class="registration_form">
+         <!-- Form -->
+            <form id="frm2" action="form_action.asp">
+              <p align="center"><input type="text" name="username" placeholder="Username" /> </p>
+              <p align="center"><input type="password" name="password" placeholder="Password"/> </p>
+              <p align="center"><input type="button" onclick="login()" value="Login" ></p>
+            </form>
+            <!-- /Form -->
+        </div>
+    </div>
         
     </div>
 </div>
