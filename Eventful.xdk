@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "https://edge-intel.s3.amazonaws.com/jsapp/production/release-2014-ww51/template-side-menu/sample.zip",
       "projectGuid": "c5bd9731-d886-4f66-affb-6d60f5b45160",
-      "lastModifiedDate": 1421559012280,
+      "lastModifiedDate": 1421560896939,
       "creationDate": 1421559012207
     },
     "sourceDirectory": "www",
@@ -42,6 +42,41 @@
         "id": "org.apache.cordova.splashscreen",
         "version": "0.3.0",
         "selectedState": "Auto",
+        "data": {},
+        "paramvals": {}
+      },
+      {
+        "id": "org.apache.cordova.network-information",
+        "version": "0.2.8",
+        "selectedState": "Included",
+        "data": {},
+        "paramvals": {}
+      },
+      {
+        "id": "org.apache.cordova.battery-status",
+        "version": "0.2.8",
+        "selectedState": "Included",
+        "data": {},
+        "paramvals": {}
+      },
+      {
+        "id": "org.apache.cordova.geolocation",
+        "version": "0.3.10",
+        "selectedState": "Included",
+        "data": {},
+        "paramvals": {}
+      },
+      {
+        "id": "org.apache.cordova.globalization",
+        "version": "0.2.7",
+        "selectedState": "Included",
+        "data": {},
+        "paramvals": {}
+      },
+      {
+        "id": "org.apache.cordova.dialogs",
+        "version": "0.2.6",
+        "selectedState": "Included",
         "data": {},
         "paramvals": {}
       }
@@ -99,8 +134,10 @@
         "runtime_": "Cordova 3.x",
         "name_": "iOS",
         "preferences_": {
-          "ios-target": "5",
-          "ios-configuration": "adhoc"
+          "ios-target": "7.1",
+          "ios-configuration": "adhoc",
+          "Fullscreen": true,
+          "Orientation": "portrait"
         },
         "isActive_": true,
         "appName_": "Eventful",
